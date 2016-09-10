@@ -1,0 +1,14 @@
+[package]
+authors = ["kenan.sulayman"]
+license = "MIT"
+name = "arx"
+version = "0.1.0"
+
+[dependencies]
+neon = "0.1"
+rand = "0.3.14"
+rust-crypto = "0.2.36"
+
+[lib]
+crate-type = ["dylib"]
+name = "arx"
