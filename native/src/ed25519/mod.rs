@@ -9,7 +9,7 @@ use neon::vm::Throw;
 use neon::js::binary::JsBuffer;
 use neon::js::class::{JsClass, Class};
 use neon::js::error::*;
-use neon::js::{JsFunction, JsObject, Object, Value};
+use neon::js::{JsBoolean, JsFunction, JsObject, Object, Value};
 use neon::mem::Handle;
 
 use util::*;
@@ -32,7 +32,7 @@ declare_types! {
 
             let scope = call.scope;
 
-            neon::js::error::throw(scope,try!(JsError::new(scope, Kind::RangeError, "Fsodakd")));
+            //neon::js::error::throw(scope,try!(JsError::new(scope, Kind::RangeError, "Fsodakd")));
 
             let bob_public_slice: Vec<u8> = buf_to_vec(bob_public);
             let alice_private_slice: Vec<u8> = buf_to_vec(alice_private);
@@ -48,8 +48,6 @@ declare_types! {
             let mut jsb_shared_key = try!(JsBuffer::new(scope, shared_key.len() as u32));
 
             buf_copy_from_slice(&shared_key, &mut jsb_shared_key);
-
-            let _ = (1..1000).collect::<Vec<i32>>();
 
             Ok(jsb_shared_key.as_value(scope))
         }
@@ -89,18 +87,39 @@ declare_types! {
             let message_slice: Vec<u8> = buf_to_vec(message);
             let alice_private_slice: Vec<u8> = buf_to_vec(alice_private);
 
-            let shared_key = crypto::ed25519::exchange(
+            let signature_slice: [u8; 64] = crypto::ed25519::signature(
                 &message_slice,
                 &alice_private_slice
             );
 
-            let mut jsb_shared_key = try!(JsBuffer::new(scope, shared_key.len() as u32));
+            let mut signature_buf = try!(JsBuffer::new(scope, signature_slice.len() as u32));
 
-            buf_copy_from_slice(&shared_key, &mut jsb_shared_key);
+            buf_copy_from_slice(&signature_slice, &mut signature_buf);
 
-            let _ = (1..1000).collect::<Vec<i32>>();
+            Ok(signature_buf.as_value(scope))
+        }
 
-            Ok(jsb_shared_key.as_value(scope))
+
+        method verify(mut call) {
+            let message = try!(call.check_argument::<JsBuffer>(0));
+            let alice_public = try!(call.check_argument::<JsBuffer>(1));
+            let alice_signature = try!(call.check_argument::<JsBuffer>(2));
+
+            let scope = call.scope;
+
+            let message_slice: Vec<u8> = buf_to_vec(message);
+            let alice_public_slice: Vec<u8> = buf_to_vec(alice_public);
+            let alice_signature_slice: Vec<u8> = buf_to_vec(alice_signature);
+
+            let verify_signature: bool = crypto::ed25519::verify(
+                &message_slice,
+                &alice_public_slice,
+                &alice_signature_slice
+            );
+
+            let verify_signature_jsbool = JsBoolean::new(scope, verify_signature);
+
+            Ok(verify_signature_jsbool.as_value(scope))
         }
     }
 }

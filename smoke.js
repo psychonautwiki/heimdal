@@ -23,3 +23,23 @@ console.log('');
 
 console.log('alice shared_key', exchange);
 console.log('bob shared_key', exchange2);
+
+console.log('');
+console.log('=========');
+console.log('');
+
+const alicePlain = "I like cats!";
+
+console.log('alice plain', alicePlain);
+
+const aliceSignature = ed25519.signature(new Buffer(alicePlain), alice.private);
+
+console.log('alice signature', aliceSignature);
+
+console.log('');
+console.log('=========');
+console.log('');
+
+const bobVerify = ed25519.verify(new Buffer(alicePlain), alice.public, aliceSignature);
+
+console.log('bob verify', bobVerify);
