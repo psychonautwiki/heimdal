@@ -6,9 +6,12 @@
   "author": "kenan.sulayman",
   "license": "MIT",
   "dependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2",
     "neon-cli": "^0.1.7"
   },
   "scripts": {
-    "install": "neon build"
+    "install": "neon build && npm test",
+    "test": "mocha"
   }
 }
