@@ -4,6 +4,7 @@
   "description": "",
   "main": "lib/index.js",
   "author": "kenan.sulayman",
+  "repository": "kenansulayman/heimdal",
   "license": "MIT",
   "dependencies": {
     "chai": "^3.5.0",
