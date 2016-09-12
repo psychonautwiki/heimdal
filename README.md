@@ -10,7 +10,7 @@ heimdal builds on [Neon](http://neon.rustbridge.io/), a Rust-Node bridge and [ru
 
 #### Architecture
 
-![Dependency DAG](https://raw.githubusercontent.com/kenansulayman/heimdal/master/depdag.svg)
+![Dependency DAG](https://raw.githubusercontent.com/KenanSulayman/heimdal/master/depdag.png)
 
 1. Heimdal consists of only three direct components - a PRNG as entropy source, the business logic and Neon for integration with Node.
 2. Rust builds an object file from heimdal and links it to the Node-ABI-specific V8 abstraction layer provided by Neon, finally producing a native Node module.
@@ -35,7 +35,7 @@ const heimdal = require('heimdal');
 
 const assert = require('assert');
 
-const heimdal = require('./');
+const heimdal = require('heimdal');
 const ed25519 = new heimdal.Ed25519();
 
 const alice = ed25519.keypair();
