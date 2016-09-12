@@ -3,17 +3,14 @@ extern crate neon;
 extern crate crypto;
 extern crate rand;
 
-use rand::Rng;
-
-use neon::js::binary::JsBuffer;
 use neon::js::class::{JsClass, Class};
-use neon::js::{JsFunction, JsObject, Object, Value};
+use neon::js::{JsFunction, Object};
 use neon::mem::Handle;
 
+#[macro_use]
 mod util;
-use util::*;
 
-mod ed25519;
+pub mod ed25519;
 use ed25519::Ed25519;
 
 register_module!(m, {

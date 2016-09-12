@@ -5,20 +5,12 @@ extern crate rand;
 
 use rand::Rng;
 
-use neon::vm::Throw;
 use neon::js::binary::JsBuffer;
-use neon::js::class::{JsClass, Class};
 use neon::js::error::*;
-use neon::js::{JsBoolean, JsFunction, JsObject, Object, Value};
+use neon::js::{JsBoolean, JsObject, Object, Value};
 use neon::mem::Handle;
 
 use util::*;
-
-macro_rules! assert_len {
-    ($slice:expr, $len:expr) => {{
-        assert!($slice.len() == $len);
-    }};
-}
 
 declare_types! {
     pub class Ed25519 as Ed25519 for () {
@@ -32,13 +24,11 @@ declare_types! {
 
             let scope = call.scope;
 
-            //neon::js::error::throw(scope,try!(JsError::new(scope, Kind::RangeError, "Fsodakd")));
-
             let bob_public_slice: Vec<u8> = buf_to_vec(bob_public);
             let alice_private_slice: Vec<u8> = buf_to_vec(alice_private);
 
-            assert_len!(bob_public_slice, 32);
-            assert_len!(alice_private_slice, 64);
+            assert_buf_with_size!(scope, bob_public_slice, "public key", 32);
+            assert_buf_with_size!(scope, alice_private_slice, "private key", 64);
 
             let shared_key = crypto::ed25519::exchange(
                 &bob_public_slice,
@@ -110,6 +100,9 @@ declare_types! {
             let message_slice: Vec<u8> = buf_to_vec(message);
             let alice_public_slice: Vec<u8> = buf_to_vec(alice_public);
             let alice_signature_slice: Vec<u8> = buf_to_vec(alice_signature);
+
+            assert_buf_with_size!(scope, alice_public_slice, "public key", 32);
+            assert_buf_with_size!(scope, alice_signature_slice, "signature", 64);
 
             let verify_signature: bool = crypto::ed25519::verify(
                 &message_slice,
