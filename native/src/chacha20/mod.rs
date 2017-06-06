@@ -21,8 +21,13 @@ declare_types! {
             let key = try!(call.check_argument::<JsBuffer>(0));
             let nonce = try!(call.check_argument::<JsBuffer>(1));
 
+            let scope = call.scope;
+
             let key_slice: Vec<u8> = buf_to_vec(key);
             let nonce_slice: Vec<u8> = buf_to_vec(nonce);
+
+            assert_or_throw!(scope, key_slice.len() == 16 || key_slice.len() == 32, "key must have a length of 16 or 32");
+            assert_or_throw!(scope, nonce_slice.len() == 8 || nonce_slice.len() == 12, "nonce must have a length of 8 or 12");
 
             Ok(crypto::chacha20::ChaCha20::new(&key_slice, &nonce_slice))
         }
@@ -35,7 +40,7 @@ declare_types! {
             let input_slice: Vec<u8> = buf_to_vec(input);
 
             let out_slice = call.arguments.this(scope).grab(|chacha20| {
-                let mut outbuf = Vec::with_capacity(input_slice.len());
+                let mut outbuf = vec!(0u8; input_slice.len());
 
                 chacha20.process(&input_slice, &mut outbuf);
 

@@ -34,6 +34,21 @@ macro_rules! assert_buf_with_size {
     }};
 }
 
+#[macro_export]
+macro_rules! assert_or_throw {
+    ($scope:expr, $cond:expr, $msg:expr) => {{
+        if !($cond) {
+            let err = try!(JsError::new(
+                $scope,
+                Kind::RangeError,
+                $msg
+            ));
+
+            return throw(err);
+        }
+    }};
+}
+
 pub fn buf_copy_from_slice(data: &[u8], buf: &mut Handle<JsBuffer>) {
     buf.grab(|mut contents| {
         let slice = contents.as_mut_slice();
