@@ -1,24 +1,22 @@
-# Loki
+# Heimdal
 
 Safe, yet incredibly fast cryptography for Node powered by the safe systems language [Rust](https://www.rust-lang.org), the Rust-bridge framework [Neon](http://neon.rustbridge.io/) and the pure-Rust cryptography library [rust-crypto](https://github.com/DaGenix/rust-crypto).
 
 > I know you loved him. I tried to tell him so, but he wouldn’t listen. So cruel to put the hammer within your reach, knowing that you could never lift it. The burden of the throne has fallen to me now.
 
-### What is loki?
+### What is heimdal?
 
-loki builds on [Neon](http://neon.rustbridge.io/), a Rust-Node bridge and [rust-crypto](https://github.com/DaGenix/rust-crypto), a safe, pure-Rust cryptography library. The goal is to provide safety and performance to developers while maintaining a high level of usability on all supported architectures.
+heimdal builds on [Neon](http://neon.rustbridge.io/), a Rust-Node bridge and [rust-crypto](https://github.com/DaGenix/rust-crypto), a safe, pure-Rust cryptography library. The goal is to provide safety and performance to developers while maintaining a high level of usability on all supported architectures.
 
 #### Architecture
 
-1. Loki consists of only three direct components - a PRNG as entropy source, the business logic and Neon for integration with Node.
-2. Rust builds an object file from loki and links it to the Node-ABI-specific V8 abstraction layer provided by Neon, finally producing a native Node module.
+1. Heimdal consists of only three direct components - a PRNG as entropy source, the business logic and Neon for integration with Node.
+2. Rust builds an object file from heimdal and links it to the Node-ABI-specific V8 abstraction layer provided by Neon, finally producing a native Node module.
 3. Upon build, the test-suite is executed against the binary, verifying the integrity of the crypto functions and mitigating potential issues caused by unsafe compiler optimisations.
 
 #### Installation
 
-If you're reading this, loki may be still too raw for you. However, if you have a nightly Rust toolchain installed, just run `npm i`. This will kickoff the build and test suite.
-
-**NOTE THAT THE NPM MODULE IS CALLED _HEIMDAL_**
+If you're reading this, heimdal may be still too raw for you. However, if you have a nightly Rust toolchain installed, just run `npm i`. This will kickoff the build and test suite.
 
 #### Usage
 
